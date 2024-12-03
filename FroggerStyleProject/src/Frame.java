@@ -30,7 +30,7 @@ public class Frame extends JPanel implements ActionListener, MouseListener, KeyL
 	
 	
 	Font myFont = new Font("Courier", Font.BOLD, 40);
-	SimpleAudioPlayer backgroundMusic = new SimpleAudioPlayer("scifi.wav", false);
+	// SimpleAudioPlayer backgroundMusic = new SimpleAudioPlayer("scifi.wav", false);
 //	Music soundBang = new Music("bang.wav", false);
 //	Music soundHaha = new Music("haha.wav", false);
 	
@@ -41,7 +41,7 @@ public class Frame extends JPanel implements ActionListener, MouseListener, KeyL
 
 	public void paint(Graphics g) {
 		super.paintComponent(g);
-
+		
 	}
 	
 	public static void main(String[] arg) {
@@ -57,9 +57,10 @@ public class Frame extends JPanel implements ActionListener, MouseListener, KeyL
 		f.setResizable(false);
  		f.addMouseListener(this);
 		f.addKeyListener(this);
-	
-		backgroundMusic.play();
 
+		
+	
+		// backgroundMusic.play();
 	
 		
 		//the cursor image must be outside of the src folder
