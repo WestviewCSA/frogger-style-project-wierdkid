@@ -72,11 +72,11 @@ public class BackTexture{
 		
 		//draw hit box based on x, y, width, height
 		//for collision detection
-		if (Frame.debugging) {
-			//draw hitbox only if debugging
-			g.setColor(Color.green);
-			g.drawRect(x, y, width, height);
-		}
+		// if (Frame.debugging) {
+		// 	//draw hitbox only if debugging
+		// 	g.setColor(Color.green);
+		// 	g.drawRect(x, y, width, height);
+		// }
 		
 	}
 	

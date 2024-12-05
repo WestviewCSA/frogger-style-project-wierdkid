@@ -21,12 +21,18 @@ import javax.swing.JPanel;
 import javax.swing.Timer;
 
 public class Frame extends JPanel implements ActionListener, MouseListener, KeyListener {
+	public static boolean debugging = true;
 	
 	//Timer related variables
 	int waveTimer = 5; //each wave of enemies is 20s
 	long ellapseTime = 0;
 	Font timeFont = new Font("Courier", Font.BOLD, 70);
 	int level = 0;
+	StaticSprite[][] backRows = new StaticSprite[6][6];
+	StaticSprite[][] lavaRows = new StaticSprite[4][40];
+	StaticSprite[][] waterRows = new StaticSprite[2][20];
+	Sprite[] maleTeachers = new Sprite[6];
+	Sprite[] femaleTeachers = new Sprite[6];
 	
 	
 	Font myFont = new Font("Courier", Font.BOLD, 40);
@@ -41,6 +47,21 @@ public class Frame extends JPanel implements ActionListener, MouseListener, KeyL
 
 	public void paint(Graphics g) {
 		super.paintComponent(g);
+		for (int i = 0; i < backRows.length; i++) {
+			for (StaticSprite staticSprite : backRows[i]) {
+				staticSprite.paint(g);
+			}
+		}
+		for (int i = 0; i < lavaRows.length; i++) {
+			for (StaticSprite staticSprite : lavaRows[i]) {
+				staticSprite.paint(g);
+			}
+		}
+		for (int i = 0; i < waterRows.length; i++) {
+			for (StaticSprite staticSprite : waterRows[i]) {
+				staticSprite.paint(g);
+			}
+		}
 		
 	}
 	
@@ -50,13 +71,29 @@ public class Frame extends JPanel implements ActionListener, MouseListener, KeyL
 	}
 	
 	public Frame() {
-		JFrame f = new JFrame("Duck Hunt");
+		JFrame f = new JFrame("School Day");
 		f.setSize(new Dimension(width, height));
 		f.setBackground(Color.white);
 		f.add(this);
 		f.setResizable(false);
  		f.addMouseListener(this);
 		f.addKeyListener(this);
+
+		for (int i = 0; i < backRows.length; i++) {
+			for (int j = 0; j < backRows[0].length; j++) {
+				backRows[i][j] = new StaticSprite(j*100, i*100, "/imgs/math_background.png", 100, 100);
+			}
+		}
+		for (int i = 0; i < lavaRows.length; i++) {
+			for (int j = 0; j < lavaRows[0].length; j++) {
+				lavaRows[i][j] = new StaticSprite(j*16, i*16 + 400, "/imgs/Lava.png", 16, 16);
+			}
+		}
+		for (int i = 0; i < waterRows.length; i++) {
+			for (int j = 0; j < waterRows[0].length; j++) {
+				waterRows[i][j] = new StaticSprite(j*32, i*32 + 200, "/imgs/water.png", 32, 32);
+			}
+		}
 
 		
 	
