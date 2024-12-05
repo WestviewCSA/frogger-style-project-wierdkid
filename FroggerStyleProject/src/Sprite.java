@@ -6,7 +6,7 @@ import java.awt.geom.AffineTransform;
 import java.net.URL;
 
 public class Sprite{
-	private Image forward, backward, left, right; 	
+	private Image img; 	
 	private AffineTransform tx;
 	
 	int dir = 0; 					//0-forward, 1-backward, 2-left, 3-right
@@ -16,24 +16,37 @@ public class Sprite{
 	double scaleWidth = 1.0;		//change to scale image
 	double scaleHeight = 1.0; 		//change to scale image
 
-	public Sprite() {
-		forward 	= getImage("/imgs/"+"forwardFile.png"); //load the image for Tree
-		backward 	= getImage("/imgs/"+"backward.png"); //load the image for Tree
-		left 		= getImage("/imgs/"+"left.png"); //load the image for Tree
-		right 		= getImage("/imgs/"+"right.png"); //load the image for Tree
+	// public Sprite() {
+	// 	img 	= getImage("/imgs/"+"forwardFile.png"); //load the image for Tree
 
-		//alter these
-		width = 0;
-		height = 0;
-		x = 0;
-		y = 0;
-		vx = 0;
-		vy = 0;
+	// 	//alter these
+	// 	width = 0;
+	// 	height = 0;
+	// 	x = 0;
+	// 	y = 0;
+	// 	vx = 0;
+	// 	vy = 0;
+		
+	// 	tx = AffineTransform.getTranslateInstance(0, 0);
+		
+	// 	init(x, y); 				//initialize the location of the image
+	// 								//use your variables
+		
+	// }
+
+	public Sprite(int v_x, int v_y, int y_loc, int x_loc, String img_filename, int w, int h) {
+		img     = getImage("/imgs/"+img_filename); //load the image for Tree
+		
+		width = w;
+		height = h;
+		x = x_loc;
+		y = y_loc;
+		vx = v_x;
+		vy = v_y;
 		
 		tx = AffineTransform.getTranslateInstance(0, 0);
 		
-		init(x, y); 				//initialize the location of the image
-									//use your variables
+		init(x, y);
 		
 	}
 
@@ -46,23 +59,8 @@ public class Sprite{
 		
 		init(x,y);
 		
-		switch(dir) {
-		case 0:
-			g2.drawImage(forward, tx, null);
-			break;
-		case 1:
-			g2.drawImage(backward, tx, null);
-
-			break;
-		case 2:
-			g2.drawImage(left, tx, null);
-
-			break;
-		case 3:
-			g2.drawImage(right, tx, null);
-			break;
-		}
-
+		g2.drawImage(img, tx, null);
+		
 	}
 	
 	private void init(double a, double b) {
@@ -80,5 +78,14 @@ public class Sprite{
 		}
 		return tempImage;
 	}
+	public int getX() {return x;}
+	public int getY() {return y;}
+	public void setX(int x) {this.x = x;}
+	public void setY(int y) {this.y = y;}
+
+	public int getVX() {return this.vx;}
+	public int getVY() {return this.vy;}	
+	public void setVX(int vx) {this.vx = vx;}
+	public void setVY(int vy) {this.vy = vy;}
 
 }

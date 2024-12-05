@@ -29,9 +29,6 @@ import javax.swing.Timer;
 // import javax.swing.JLabel;
 
 
-
-
-
 public class Frame extends JPanel implements ActionListener, MouseListener, KeyListener {
 
 	public static boolean debugging = true;
@@ -46,6 +43,7 @@ public class Frame extends JPanel implements ActionListener, MouseListener, KeyL
 	StaticSprite[][] waterRows = new StaticSprite[2][20];
 	Sprite[] maleTeachers = new Sprite[6];
 	Sprite[] femaleTeachers = new Sprite[6];
+	Sprite player = new Sprite(0, 0, 500, 300-16, "Student.png", 16, 20);
 	
 	
 	Font myFont = new Font("Courier", Font.BOLD, 40);
@@ -75,12 +73,18 @@ public class Frame extends JPanel implements ActionListener, MouseListener, KeyL
 				staticSprite.paint(g);
 			}
 		}
+		if (player.getX() < 0 && player.getVX() < 0) {player.setVX(0);}
+		if (player.getX() > 568 && player.getVX() > 0) {player.setVX(0);}
+		if (player.getY() > 540 && player.getVY() > 0) {player.setVY(0);}
+		if (player.getY() <= 0 && player.getVY() < 0) {player.setVY(0);}
+		player.paint(g);
+		
 		
 	}
-	
+		
 	public static void main(String[] arg) {
-		// new Frame();
-	}
+		new Frame();
+	}	
 	
 	public Frame(){
 		JFrame f = new JFrame("School Day");
@@ -166,16 +170,76 @@ public class Frame extends JPanel implements ActionListener, MouseListener, KeyL
 
 	@Override
 	public void keyPressed(KeyEvent arg0) {
-		// TODO Auto-generated method stub
-		System.out.println(arg0.getKeyCode());
+//		 TODO Auto-generated method stub
 		
-		
+
+		switch (arg0.getKeyCode()) {
+			case (87): // W
+				if (player.getX() <= 0) {break;}
+				player.setVY(-3);
+				break;
+			case(65): // A
+				// if (locked || gameOver) {break;}
+				player.setVX(-3);
+				break;
+			case(83): // S
+				// if (locked || gameOver) {break;}
+				player.setVY(3);
+				break;
+			case(68): // D
+				if (player.getX() >= 600-16) {break;}
+				player.setVX(3);				
+				break;
+			// case (32):
+			// 	if (gameOver) {break;}
+			// 	//Mounting and dismounting
+			// 	if (canLock) {
+			// 		//Mounting
+			// 		System.out.println("Mounting");
+			// 		locked = true;
+			// 		canLock = false;
+			// 		break;
+			// 	}
+			// 	if (locked) {
+			// 		//Dismounting
+			// 		System.out.println("Dismount");
+			// 		locked = false;
+			// 		player.setY(player.getY() - 30);
+			// 		break;
+			// 	}
+				
+			// 	break;
+			// case (80): //P
+			// 	if (gameOver || player.isCompleted()) {
+			// 		this.reset();
+			// 		this.lives.clear();
+			// 		for (int l = 0; l < 3; l++) { this.lives.add(new LifeImage(l*40, 10));}
+			// 		break;
+			// 	}
+		}
 		
 	}
 
 	@Override
 	public void keyReleased(KeyEvent arg0) {
-		// TODO Auto-generated method stub
+		switch (arg0.getKeyCode()) {
+			case (87): // W
+				// if (locked || gameOver) {break;}
+				player.setVY(0);
+				break;
+			case(65): // A
+				// if (player.getX() <= 0) {break;}
+				player.setVX(0);
+				break;
+			case(83): // S
+				// if (locked || gameOver) {break;}
+				player.setVY(0);
+				break;
+			case(68): // D
+				// if (locked || gameOver) {break;}
+				player.setVX(0);				
+				break;
+		}
 		
 	}
 
