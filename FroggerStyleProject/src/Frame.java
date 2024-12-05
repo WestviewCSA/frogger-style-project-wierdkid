@@ -1,11 +1,11 @@
-import java.awt.BorderLayout;
+// import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Graphics;
-import java.awt.GridLayout;
+// import java.awt.GridLayout;
 import java.awt.Point;
-import java.awt.Rectangle;
+// import java.awt.Rectangle;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -13,14 +13,27 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-
 import javax.swing.ImageIcon;
-import javax.swing.JButton;
+// import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.Timer;
+// import java.awt.Component;
+// import java.awt.Graphics2D;
+// import java.awt.Image;
+// import java.awt.Panel;
+// import java.awt.geom.AffineTransform;
+// import java.net.URL;
+// import java.util.ArrayList;
+// import java.util.List;
+// import javax.swing.JLabel;
+
+
+
+
 
 public class Frame extends JPanel implements ActionListener, MouseListener, KeyListener {
+
 	public static boolean debugging = true;
 	
 	//Timer related variables
@@ -66,11 +79,10 @@ public class Frame extends JPanel implements ActionListener, MouseListener, KeyL
 	}
 	
 	public static void main(String[] arg) {
-		Frame f = new Frame();
-		
+		// new Frame();
 	}
 	
-	public Frame() {
+	public Frame(){
 		JFrame f = new JFrame("School Day");
 		f.setSize(new Dimension(width, height));
 		f.setBackground(Color.white);
