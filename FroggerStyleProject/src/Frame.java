@@ -78,8 +78,6 @@ public class Frame extends JPanel implements ActionListener, MouseListener, KeyL
 		if (player.getY() > 540 && player.getVY() > 0) {player.setVY(0);}
 		if (player.getY() <= 0 && player.getVY() < 0) {player.setVY(0);}
 		player.paint(g);
-		
-		
 	}
 		
 	public static void main(String[] arg) {
