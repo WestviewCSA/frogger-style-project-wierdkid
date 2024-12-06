@@ -73,6 +73,10 @@ public class Sprite{
 	public Rectangle getHitbox() {
 		return new Rectangle(x, y, width, height);
 	}
+
+	public boolean collisionsWith(Sprite other) {
+		return getHitbox().intersects(other.getHitbox());
+	}
 	
 	private void init(double a, double b) {
 		tx.setToTranslation(a, b);

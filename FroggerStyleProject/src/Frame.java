@@ -31,10 +31,14 @@ import javax.swing.Timer;
 
 public class Frame extends JPanel implements ActionListener, MouseListener, KeyListener {
 
-	public static boolean debugging = true;
+	public static boolean debugging = false;
+	private boolean playerWon = false;
+    private int winMessageFrames = 0;
+    private final int WIN_MESSAGE_DURATION = 30; 
+
 	
 	//Timer related variables
-	boolean safe = false;
+	boolean safe = true;
 	int waveTimer = 5; //each wave of enemies is 20s
 	long ellapseTime = 0;
 	Font timeFont = new Font("Courier", Font.BOLD, 70);
@@ -46,14 +50,15 @@ public class Frame extends JPanel implements ActionListener, MouseListener, KeyL
 	Sprite[][] femaleTeachers = new Sprite[2][6];
 	Sprite[][] bigController = new Sprite[2][6];
 	Sprite[][] smallController = new Sprite[2][6];
+	Sprite grade = new Sprite(0, 0, 50, 284, "A.png", 32, 32);
 
 	Sprite player = new Sprite(0, 0, 500, 300-16, "Student.png", 16, 20);
 	
 	
 	Font myFont = new Font("Courier", Font.BOLD, 40);
 	// SimpleAudioPlayer backgroundMusic = new SimpleAudioPlayer("scifi.wav", false);
-//	Music soundBang = new Music("bang.wav", false);
-//	Music soundHaha = new Music("haha.wav", false);
+	//	Music soundBang = new Music("bang.wav", false);
+	//	Music soundHaha = new Music("haha.wav", false);
 	
 	//frame width/height
 	int width = 600;
@@ -62,7 +67,6 @@ public class Frame extends JPanel implements ActionListener, MouseListener, KeyL
 
 	public void paint(Graphics g) {
 		super.paintComponent(g);
-		safe = false;
 		for (int i = 0; i < backRows.length; i++) {
 			for (StaticSprite staticSprite : backRows[i]) {
 				staticSprite.paint(g);
@@ -71,8 +75,7 @@ public class Frame extends JPanel implements ActionListener, MouseListener, KeyL
 		for (int i = 0; i < lavaRows.length; i++) {
 			for (StaticSprite staticSprite : lavaRows[i]) {
 				if (staticSprite.collisionsWith(player)){
-					player.setX(300-16);
-					player.setY(500);
+					safe = false;
 				}
 				staticSprite.paint(g);
 			}
@@ -87,19 +90,35 @@ public class Frame extends JPanel implements ActionListener, MouseListener, KeyL
 			}
 		}
 		for (Sprite big : bigController[0]) {
-			if (big.getX() > 560) {big.setX(-40);}
+            if (big.getX() < -20) {big.setX(580);}
+			if(big.collisionsWith(player)){
+				safe = true;
+				player.setX(player.getX()+big.getVX());
+			}
 			big.paint(g);
 		}
 		for (Sprite big : bigController[1]) {
 			if (big.getX() > 560) {big.setX(-40);}
+			if (big.collisionsWith(player)){
+				safe = true;
+				player.setX(player.getX()+big.getVX());
+			}
 			big.paint(g);
 		}
 		for (Sprite small : smallController[0]) {
-			if (small.getX() > 560) {small.setX(-40);}
+			if (small.getX() > 580) {small.setX(-20);}
+			if (small.collisionsWith(player)){
+				safe = true;
+				player.setX(player.getX()+small.getVX());
+			}
 			small.paint(g);
 		}
 		for (Sprite small : smallController[1]) {
-            if (small.getX() < -40) {small.setX(560);}
+            if (small.getX() < -20) {small.setX(580);}
+			if (small.collisionsWith(player)){
+				safe = true;
+				player.setX(player.getX()+small.getVX());
+			}
             small.paint(g);
         }
 		
@@ -108,19 +127,52 @@ public class Frame extends JPanel implements ActionListener, MouseListener, KeyL
 		if (player.getX() > 568 && player.getVX() > 0) {player.setVX(0);}
 		if (player.getY() > 540 && player.getVY() > 0) {player.setVY(0);}
 		if (player.getY() <= 0 && player.getVY() < 0) {player.setVY(0);}
+		if(!safe){
+			player.setX(300-16);
+			player.setY(500);
+			safe = true;
+		}
+		grade.paint(g);
 		player.paint(g);
+		if (grade.collisionsWith(player)){
+            player.setX(300-16);
+            player.setY(500);
+            playerWon = true;
+            winMessageFrames = WIN_MESSAGE_DURATION;
+        }
 		for (int i = 0; i < maleTeachers.length; i++) {
 			for (Sprite maleTeacher : maleTeachers[i]) {
 				if (maleTeacher.getX() > 560) {maleTeacher.setX(-40);}
 				maleTeacher.paint(g);
+				if (maleTeacher.collisionsWith(player)){
+					player.setX(300-16);
+                    player.setY(500);
+				}
 			}
 		}
 		for (int i = 0; i < femaleTeachers.length; i++) {
 			for (Sprite femaleTeacher : femaleTeachers[i]) {
 				if (femaleTeacher.getX() < -40) {femaleTeacher.setX(560);}
 				femaleTeacher.paint(g);
+				if(femaleTeacher.collisionsWith(player)){
+					player.setX(300-16);
+                    player.setY(500);
+				}
 			}
 		}
+		if (playerWon && winMessageFrames > 0) {
+            g.setColor(Color.GREEN);
+            g.setFont(new Font("Arial", Font.BOLD, 48));
+            String winMessage = "You Win!";
+            int messageWidth = g.getFontMetrics().stringWidth(winMessage);
+            g.drawString(winMessage, (width - messageWidth) / 2, 320);
+            winMessageFrames--;
+            
+            // Reset the win state if the message duration is over
+            if (winMessageFrames == 0) {
+                playerWon = false;
+            }
+        }
 	}
 		
 	public static void main(String[] arg) {
@@ -160,11 +212,11 @@ public class Frame extends JPanel implements ActionListener, MouseListener, KeyL
 			femaleTeachers[1][i] = new Sprite(-1, 0, 368, 100*i+10, "female_teacher.png", 25, 32);
 		}
 		for (int i = 0; i < bigController[0].length; i++) {
-			bigController[0][i] = new Sprite(0, 0, 232, 100*i+10, "large_controller.png", 38, 32);
-			bigController[1][i] = new Sprite(0, 0, 136, 100*i+10, "large_controller.png", 38, 26);
+			bigController[0][i] = new Sprite(-1, 0, 232, 100*i+10, "large_controller.png", 38, 32);
+			bigController[1][i] = new Sprite(1, 0, 136, 100*i+10, "large_controller.png", 38, 26);
 		}
 		for (int i = 0; i < smallController[0].length; i++) {
-			smallController[0][i] = new Sprite(-1, 0, 200, 100*i+10, "little_controller.png", 23, 13);
+			smallController[0][i] = new Sprite(1, 0, 210, 100*i+10, "little_controller.png", 23, 13);
 			smallController[1][i] = new Sprite(-1, 0, 178, 100*i+10, "little_controller.png", 23, 13);
 		}
 	
@@ -245,6 +297,20 @@ public class Frame extends JPanel implements ActionListener, MouseListener, KeyL
 				if (player.getX() >= 600-16) {break;}
 				player.setVX(3);				
 				break;
+			case KeyEvent.VK_UP: // Up arrow
+				if (player.getY() <= 0) {break;}
+				player.setVY(-3);
+				break;
+			case KeyEvent.VK_LEFT: // Left arrow
+				player.setVX(-3);
+				break;
+			case KeyEvent.VK_DOWN: // Down arrow
+				player.setVY(3);
+				break;
+			case KeyEvent.VK_RIGHT: // Right arrow
+				if (player.getX() >= 600-16) {break;}
+				player.setVX(3);				
+				break;
 			// case (32):
 			// 	if (gameOver) {break;}
 			// 	//Mounting and dismounting
@@ -292,6 +358,18 @@ public class Frame extends JPanel implements ActionListener, MouseListener, KeyL
 				break;
 			case(68): // D
 				// if (locked || gameOver) {break;}
+				player.setVX(0);				
+				break;
+			case KeyEvent.VK_UP: // Up arrow
+				player.setVY(0);
+				break;
+			case KeyEvent.VK_LEFT: // Left arrow
+				player.setVX(0);
+				break;
+			case KeyEvent.VK_DOWN: // Down arrow
+				player.setVY(0);
+				break;
+			case KeyEvent.VK_RIGHT: // Right arrow
 				player.setVX(0);				
 				break;
 		}
