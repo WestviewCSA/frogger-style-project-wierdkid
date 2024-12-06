@@ -4,6 +4,8 @@ import java.awt.Image;
 import java.awt.Toolkit;
 import java.awt.geom.AffineTransform;
 import java.net.URL;
+import java.awt.Color;
+import java.awt.Rectangle;
 
 public class Sprite{
 	private Image img; 	
@@ -60,7 +62,16 @@ public class Sprite{
 		init(x,y);
 		
 		g2.drawImage(img, tx, null);
+
+		if (Frame.debugging) {
+			//draw hitbox only if debugging
+			g.setColor(Color.green);
+			g.drawRect(x, y, width, height);
+		}
 		
+	}
+	public Rectangle getHitbox() {
+		return new Rectangle(x, y, width, height);
 	}
 	
 	private void init(double a, double b) {

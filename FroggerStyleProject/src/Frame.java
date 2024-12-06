@@ -34,15 +34,19 @@ public class Frame extends JPanel implements ActionListener, MouseListener, KeyL
 	public static boolean debugging = true;
 	
 	//Timer related variables
+	boolean safe = false;
 	int waveTimer = 5; //each wave of enemies is 20s
 	long ellapseTime = 0;
 	Font timeFont = new Font("Courier", Font.BOLD, 70);
 	int level = 0;
 	StaticSprite[][] backRows = new StaticSprite[6][6];
-	StaticSprite[][] lavaRows = new StaticSprite[4][40];
-	StaticSprite[][] waterRows = new StaticSprite[2][20];
-	Sprite[] maleTeachers = new Sprite[6];
-	Sprite[] femaleTeachers = new Sprite[6];
+	StaticSprite[][] lavaRows = new StaticSprite[8][40];
+	StaticSprite[][] waterRows = new StaticSprite[4][20];
+	Sprite[][] maleTeachers = new Sprite[2][6];
+	Sprite[][] femaleTeachers = new Sprite[2][6];
+	Sprite[][] bigController = new Sprite[2][6];
+	Sprite[][] smallController = new Sprite[2][6];
+
 	Sprite player = new Sprite(0, 0, 500, 300-16, "Student.png", 16, 20);
 	
 	
@@ -58,6 +62,7 @@ public class Frame extends JPanel implements ActionListener, MouseListener, KeyL
 
 	public void paint(Graphics g) {
 		super.paintComponent(g);
+		safe = false;
 		for (int i = 0; i < backRows.length; i++) {
 			for (StaticSprite staticSprite : backRows[i]) {
 				staticSprite.paint(g);
@@ -65,19 +70,57 @@ public class Frame extends JPanel implements ActionListener, MouseListener, KeyL
 		}
 		for (int i = 0; i < lavaRows.length; i++) {
 			for (StaticSprite staticSprite : lavaRows[i]) {
+				if (staticSprite.collisionsWith(player)){
+					player.setX(300-16);
+					player.setY(500);
+				}
 				staticSprite.paint(g);
 			}
 		}
 		for (int i = 0; i < waterRows.length; i++) {
 			for (StaticSprite staticSprite : waterRows[i]) {
+				if (staticSprite.collisionsWith(player)){
+					player.setVX(Math.max(-2, Math.min(2, player.getVX())));
+					player.setVY(Math.max(-2, Math.min(2, player.getVY())));
+				}
 				staticSprite.paint(g);
 			}
 		}
+		for (Sprite big : bigController[0]) {
+			if (big.getX() > 560) {big.setX(-40);}
+			big.paint(g);
+		}
+		for (Sprite big : bigController[1]) {
+			if (big.getX() > 560) {big.setX(-40);}
+			big.paint(g);
+		}
+		for (Sprite small : smallController[0]) {
+			if (small.getX() > 560) {small.setX(-40);}
+			small.paint(g);
+		}
+		for (Sprite small : smallController[1]) {
+            if (small.getX() < -40) {small.setX(560);}
+            small.paint(g);
+        }
+		
+		
 		if (player.getX() < 0 && player.getVX() < 0) {player.setVX(0);}
 		if (player.getX() > 568 && player.getVX() > 0) {player.setVX(0);}
 		if (player.getY() > 540 && player.getVY() > 0) {player.setVY(0);}
 		if (player.getY() <= 0 && player.getVY() < 0) {player.setVY(0);}
 		player.paint(g);
+		for (int i = 0; i < maleTeachers.length; i++) {
+			for (Sprite maleTeacher : maleTeachers[i]) {
+				if (maleTeacher.getX() > 560) {maleTeacher.setX(-40);}
+				maleTeacher.paint(g);
+			}
+		}
+		for (int i = 0; i < femaleTeachers.length; i++) {
+			for (Sprite femaleTeacher : femaleTeachers[i]) {
+				if (femaleTeacher.getX() < -40) {femaleTeacher.setX(560);}
+				femaleTeacher.paint(g);
+			}
+		}
 	}
 		
 	public static void main(String[] arg) {
@@ -100,16 +143,30 @@ public class Frame extends JPanel implements ActionListener, MouseListener, KeyL
 		}
 		for (int i = 0; i < lavaRows.length; i++) {
 			for (int j = 0; j < lavaRows[0].length; j++) {
-				lavaRows[i][j] = new StaticSprite(j*16, i*16 + 400, "/imgs/Lava.png", 16, 16);
+				lavaRows[i][j] = new StaticSprite(j*16, i*16 + 136, "/imgs/Lava.png", 16, 16);
 			}
 		}
 		for (int i = 0; i < waterRows.length; i++) {
 			for (int j = 0; j < waterRows[0].length; j++) {
-				waterRows[i][j] = new StaticSprite(j*32, i*32 + 200, "/imgs/water.png", 32, 32);
+				waterRows[i][j] = new StaticSprite(j*32, i*32 + 336, "/imgs/water.png", 32, 32);
 			}
 		}
-
-		
+		for (int i = 0; i < maleTeachers[0].length; i++) {
+			maleTeachers[0][i] = new Sprite(2, 0, 400, 100*i+10, "male_teacher.png", 25, 32);
+			maleTeachers[1][i] = new Sprite(2, 0, 336, 100*i+10, "male_teacher.png", 25, 32);
+		}
+		for (int i = 0; i < femaleTeachers[0].length; i++) {
+			femaleTeachers[0][i] = new Sprite(-1, 0, 432, 100*i+10, "female_teacher.png", 25, 32);
+			femaleTeachers[1][i] = new Sprite(-1, 0, 368, 100*i+10, "female_teacher.png", 25, 32);
+		}
+		for (int i = 0; i < bigController[0].length; i++) {
+			bigController[0][i] = new Sprite(0, 0, 232, 100*i+10, "large_controller.png", 38, 32);
+			bigController[1][i] = new Sprite(0, 0, 136, 100*i+10, "large_controller.png", 38, 26);
+		}
+		for (int i = 0; i < smallController[0].length; i++) {
+			smallController[0][i] = new Sprite(-1, 0, 200, 100*i+10, "little_controller.png", 23, 13);
+			smallController[1][i] = new Sprite(-1, 0, 178, 100*i+10, "little_controller.png", 23, 13);
+		}
 	
 		// backgroundMusic.play();
 	

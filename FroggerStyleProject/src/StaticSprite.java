@@ -65,12 +65,16 @@ public class StaticSprite{
 		
 		//draw hit box based on x, y, width, height
 		//for collision detection
-		if (Frame.debugging) {
-			//draw hitbox only if debugging
-			g.setColor(Color.green);
-			g.drawRect(x, y, width, height);
-		}
+		// if (Frame.debugging) {
+		// 	//draw hitbox only if debugging
+		// 	g.setColor(Color.green);
+		// 	g.drawRect(x, y, width, height);
+		// }
 		
+	}
+
+	public boolean collisionsWith(Sprite other) {
+		return getHitbox().intersects(other.getHitbox());
 	}
 	
 	private void init(double a, double b) {
