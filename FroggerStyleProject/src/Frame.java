@@ -24,7 +24,7 @@ import javax.swing.Timer;
 // import java.awt.Panel;
 // import java.awt.geom.AffineTransform;
 // import java.net.URL;
-// import java.util.ArrayList;
+import java.util.ArrayList;
 // import java.util.List;
 // import javax.swing.JLabel;
 
@@ -35,6 +35,12 @@ public class Frame extends JPanel implements ActionListener, MouseListener, KeyL
 	private boolean playerWon = false;
     private int winMessageFrames = 0;
     private final int WIN_MESSAGE_DURATION = 30; 
+    private int deathCount = 0;
+	private boolean playerLost = false;
+    private int loseMessageFrames = 0;
+    private final int LOSE_MESSAGE_DURATION = 30;
+
+    
 
 	
 	//Timer related variables
@@ -67,11 +73,15 @@ public class Frame extends JPanel implements ActionListener, MouseListener, KeyL
 
 	public void paint(Graphics g) {
 		super.paintComponent(g);
+		
+		//All the rows
+		// Background
 		for (int i = 0; i < backRows.length; i++) {
 			for (StaticSprite staticSprite : backRows[i]) {
 				staticSprite.paint(g);
 			}
 		}
+		// Lava
 		for (int i = 0; i < lavaRows.length; i++) {
 			for (StaticSprite staticSprite : lavaRows[i]) {
 				if (staticSprite.collisionsWith(player)){
@@ -80,6 +90,7 @@ public class Frame extends JPanel implements ActionListener, MouseListener, KeyL
 				staticSprite.paint(g);
 			}
 		}
+		// Water
 		for (int i = 0; i < waterRows.length; i++) {
 			for (StaticSprite staticSprite : waterRows[i]) {
 				if (staticSprite.collisionsWith(player)){
@@ -89,6 +100,7 @@ public class Frame extends JPanel implements ActionListener, MouseListener, KeyL
 				staticSprite.paint(g);
 			}
 		}
+		// C
 		for (Sprite big : bigController[0]) {
             if (big.getX() < -20) {big.setX(580);}
 			if(big.collisionsWith(player)){
@@ -97,6 +109,7 @@ public class Frame extends JPanel implements ActionListener, MouseListener, KeyL
 			}
 			big.paint(g);
 		}
+		//
 		for (Sprite big : bigController[1]) {
 			if (big.getX() > 560) {big.setX(-40);}
 			if (big.collisionsWith(player)){
@@ -131,6 +144,7 @@ public class Frame extends JPanel implements ActionListener, MouseListener, KeyL
 			player.setX(300-16);
 			player.setY(500);
 			safe = true;
+			deathCount++;
 		}
 		grade.paint(g);
 		player.paint(g);
@@ -147,6 +161,7 @@ public class Frame extends JPanel implements ActionListener, MouseListener, KeyL
 				if (maleTeacher.collisionsWith(player)){
 					player.setX(300-16);
                     player.setY(500);
+					deathCount++;
 				}
 			}
 		}
@@ -157,9 +172,23 @@ public class Frame extends JPanel implements ActionListener, MouseListener, KeyL
 				if(femaleTeacher.collisionsWith(player)){
 					player.setX(300-16);
                     player.setY(500);
+					deathCount++;
 				}
 			}
 		}
+		g.setColor(Color.RED);
+		g.setFont(new Font("Arial", Font.BOLD, 20));
+		g.drawString("Deaths: " + deathCount, 10, 30);
+
+		if (deathCount >= 5) {
+            deathCount = 0;
+            playerLost = true;
+            loseMessageFrames = LOSE_MESSAGE_DURATION;
+            // Reset player position
+            player.setX(300-16);
+            player.setY(500);
+        }
+
 		if (playerWon && winMessageFrames > 0) {
             g.setColor(Color.GREEN);
             g.setFont(new Font("Arial", Font.BOLD, 48));
@@ -171,6 +200,18 @@ public class Frame extends JPanel implements ActionListener, MouseListener, KeyL
             // Reset the win state if the message duration is over
             if (winMessageFrames == 0) {
                 playerWon = false;
+            }
+        }
+		if (playerLost && loseMessageFrames > 0) {
+            g.setColor(Color.RED);
+            g.setFont(new Font("Arial", Font.BOLD, 48));
+            String loseMessage = "You Lose!";
+            int messageWidth = g.getFontMetrics().stringWidth(loseMessage);
+            g.drawString(loseMessage, (width - messageWidth) / 2, 320);
+            loseMessageFrames--;
+
+            if (loseMessageFrames == 0) {
+                playerLost = false;
             }
         }
 	}
