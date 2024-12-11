@@ -36,6 +36,7 @@ public class Frame extends JPanel implements ActionListener, MouseListener, KeyL
     private int winMessageFrames = 0;
     private final int WIN_MESSAGE_DURATION = 30; 
     private int deathCount = 0;
+	private int score = 0;
 	private boolean playerLost = false;
     private int loseMessageFrames = 0;
     private final int LOSE_MESSAGE_DURATION = 30;
@@ -62,9 +63,7 @@ public class Frame extends JPanel implements ActionListener, MouseListener, KeyL
 	
 	
 	Font myFont = new Font("Courier", Font.BOLD, 40);
-	// SimpleAudioPlayer backgroundMusic = new SimpleAudioPlayer("scifi.wav", false);
-	//	Music soundBang = new Music("bang.wav", false);
-	//	Music soundHaha = new Music("haha.wav", false);
+	SimpleAudioPlayer backgroundMusic = new SimpleAudioPlayer("resonance chamber.wav", true);
 	
 	//frame width/height
 	int width = 600;
@@ -149,6 +148,7 @@ public class Frame extends JPanel implements ActionListener, MouseListener, KeyL
 		grade.paint(g);
 		player.paint(g);
 		if (grade.collisionsWith(player)){
+			score++;
             player.setX(300-16);
             player.setY(500);
             playerWon = true;
@@ -178,9 +178,12 @@ public class Frame extends JPanel implements ActionListener, MouseListener, KeyL
 		}
 		g.setColor(Color.RED);
 		g.setFont(new Font("Arial", Font.BOLD, 20));
-		g.drawString("Deaths: " + deathCount, 10, 30);
+		g.drawString("Deaths: " + deathCount + "/5", 10, 30);
+		g.setColor(Color.GREEN);
+		g.drawString("Score: " + score, 10, 50);
 
 		if (deathCount >= 5) {
+			score = 0;
             deathCount = 0;
             playerLost = true;
             loseMessageFrames = LOSE_MESSAGE_DURATION;
@@ -196,6 +199,7 @@ public class Frame extends JPanel implements ActionListener, MouseListener, KeyL
             int messageWidth = g.getFontMetrics().stringWidth(winMessage);
             g.drawString(winMessage, (width - messageWidth) / 2, 320);
             winMessageFrames--;
+			// score++;
             
             // Reset the win state if the message duration is over
             if (winMessageFrames == 0) {
