@@ -1,0 +1,16 @@
+2024-12-13 12:09:04,191 [Worker-6: Loading available Gradle versions] INFO  o.e.b.c.i.u.g.PublishedGradleVersions - Gradle version information cache is up-to-date. Trying to read.
+2024-12-13 12:09:55,762 [JGit-FileStoreAttributeReader-1] ERROR org.eclipse.jgit.util.FS - \\DOHOME2.PUSD.DOM\Home2$\Student2\1946105\Downloads\frogger-style-project-wierdkid-master\frogger-style-project-wierdkid\.git\.probe-baad8b95-c46e-4927-8a8f-251a6d115067: The process cannot access the file because it is being used by another process
+java.nio.file.FileSystemException: \\DOHOME2.PUSD.DOM\Home2$\Student2\1946105\Downloads\frogger-style-project-wierdkid-master\frogger-style-project-wierdkid\.git\.probe-baad8b95-c46e-4927-8a8f-251a6d115067: The process cannot access the file because it is being used by another process
+	at java.base/sun.nio.fs.WindowsException.translateToIOException(WindowsException.java:92)
+	at java.base/sun.nio.fs.WindowsException.rethrowAsIOException(WindowsException.java:103)
+	at java.base/sun.nio.fs.WindowsException.rethrowAsIOException(WindowsException.java:108)
+	at java.base/sun.nio.fs.WindowsFileSystemProvider.newByteChannel(WindowsFileSystemProvider.java:234)
+	at java.base/java.nio.file.spi.FileSystemProvider.newOutputStream(FileSystemProvider.java:482)
+	at java.base/java.nio.file.Files.newOutputStream(Files.java:228)
+	at org.eclipse.jgit.util.FS$FileStoreAttributes.write(FS.java:555)
+	at org.eclipse.jgit.util.FS$FileStoreAttributes.measureMinimalRacyInterval(FS.java:514)
+	at org.eclipse.jgit.util.FS$FileStoreAttributes.lambda$3(FS.java:450)
+	at java.base/java.util.concurrent.CompletableFuture$AsyncSupply.run(CompletableFuture.java:1812)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1144)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:642)
+	at java.base/java.lang.Thread.run(Thread.java:1575)

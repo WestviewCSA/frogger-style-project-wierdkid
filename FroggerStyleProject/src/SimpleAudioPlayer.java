@@ -24,7 +24,7 @@ public class SimpleAudioPlayer   {
     String status; 
       
     AudioInputStream audioInputStream; 
-    static String filePath; 
+    String filePath; 
   
     // constructor to initialize streams and clip 
     public SimpleAudioPlayer(String fileName, boolean loop) 
@@ -35,7 +35,7 @@ public class SimpleAudioPlayer   {
         try {
         	
 			audioInputStream =  
-			        AudioSystem.getAudioInputStream(new File(filePath));
+			        AudioSystem.getAudioInputStream(new File("src\\imgs\\resonance_chamber.wav"));
 			
 			   // create clip reference 
 	        clip = AudioSystem.getClip(); 
@@ -47,7 +47,7 @@ public class SimpleAudioPlayer   {
 	        	clip.loop(Clip.LOOP_CONTINUOUSLY); 
 	        }
 		} catch (Exception e) {
-			System.out.println(e);
+			System.out.println("there is a prob: " + e.getMessage());
 		}
           
      
@@ -62,7 +62,7 @@ public class SimpleAudioPlayer   {
         status = "play"; 
     } 
       
-    // Method to pause the audio 
+    // Method to pause the audio
     public void pause()  
     { 
         if (status.equals("paused"))  

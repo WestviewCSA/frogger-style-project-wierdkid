@@ -63,7 +63,7 @@ public class Frame extends JPanel implements ActionListener, MouseListener, KeyL
 	
 	
 	Font myFont = new Font("Courier", Font.BOLD, 40);
-	SimpleAudioPlayer backgroundMusic = new SimpleAudioPlayer("resonance chamber.wav", true);
+	SimpleAudioPlayer backgroundMusic = new SimpleAudioPlayer("/imgs/resonance_chamber.wav", true);
 	
 	//frame width/height
 	int width = 600;
@@ -281,7 +281,7 @@ public class Frame extends JPanel implements ActionListener, MouseListener, KeyL
 			smallController[1][i] = new Sprite(-1, 0, 178, 100*i+10, "little_controller.png", 23, 13);
 		}
 	
-		// backgroundMusic.play();
+//		backgroundMusic.play();
 		setCursor(Toolkit.getDefaultToolkit().createCustomCursor(
 				new ImageIcon("torch.png").getImage(),
 				new Point(0,0),"custom cursor"));	
